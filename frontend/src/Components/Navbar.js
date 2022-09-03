@@ -1,8 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import Filter from "./Filter";
+import AuthService from "../utils/AuthService";
 
 const Navbar = () => {
-    const listMenu = [ "Home", "Cards", "Profile", "Logout" ];
+    const listMenu = [
+        { name: "Home", function: () => setMenu(!menu) },
+        { name: "Cards", function: () => console.log('clicked') },
+        { name: "Profile", function: () => console.log('clicked') },
+        { name: "Logout", function: () => AuthService.logout() },
+    ]
     const [menu, setMenu] = useState(false);
     const [filter, setFilter] = useState(false);
 
@@ -55,10 +61,10 @@ const Navbar = () => {
                             <p className="text-black text-xl font-extrabold">Awards Menu</p>
                         </li>
                         {
-                            listMenu.map((item, index) => {
+                            listMenu.map((menu, index) => {
                                 return (
-                                    <li className="text-gray-400 font-medium cursor-pointer hover:text-black" key={index}>
-                                        {item}
+                                    <li onClick={menu.function} className="text-gray-400 font-medium cursor-pointer hover:text-black" key={index}>
+                                        {menu.name}
                                     </li>
                                 )
                             })
