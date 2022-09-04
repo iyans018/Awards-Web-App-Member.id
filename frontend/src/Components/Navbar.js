@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Filter from "./Filter";
 import AuthService from "../utils/AuthService";
 
-const Navbar = () => {
+const Navbar = ({ openFilter, setOpenFilter }) => {
     const listMenu = [
         { name: "Home", function: () => setMenu(!menu) },
         { name: "Cards", function: () => console.log('clicked') },
@@ -10,7 +10,6 @@ const Navbar = () => {
         { name: "Logout", function: () => AuthService.logout() },
     ]
     const [menu, setMenu] = useState(false);
-    const [filter, setFilter] = useState(false);
 
     const ref = useRef(null);
     
@@ -47,7 +46,7 @@ const Navbar = () => {
                         width={35} 
                         height={35} 
                         alt="gambar-filter-menu" 
-                        onClick={() => setFilter(!filter)}
+                        onClick={() => setOpenFilter(!openFilter)}
                     />
                 </li>
             </ul>
@@ -72,7 +71,6 @@ const Navbar = () => {
                     </ul>
                 </div>
             </div>
-            <Filter open={filter} setOpen={() => setFilter(!filter)} />
         </nav>
     )
 }

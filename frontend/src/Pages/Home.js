@@ -2,13 +2,17 @@ import axios from "axios";
 import { useState, useEffect, lazy, Suspense } from "react";
 import Navbar from "../Components/Navbar";
 import Pagination from "../Components/Pagination";
+import Filter from "../Components/Filter";
 
 const AwardCard = lazy(() => import("../Components/AwardCard"));
 
-const Awards = () => {
+const Home = () => {
     const [awards, setAwards] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [filter, setFilter] = useState(false);
+    const [poin, setPoin] = useState(10000);
+    const [type, setType] = useState([]);
     
     useEffect(() => {;
         getAwards();
@@ -26,7 +30,15 @@ const Awards = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar openFilter={filter} setOpenFilter={setFilter} />
+            <Filter 
+                open={filter} 
+                setOpen={() => setFilter(!filter)} 
+                poin={poin} 
+                setPoin={setPoin}
+                type={type}
+                setType={setType}
+            />
             <div className="px-7 pt-7 h-full flex flex-col gap-5">
                 {awards.length < 1 ? (
                     <div className="flex flex-col justify-center items-center gap-2">
@@ -51,4 +63,4 @@ const Awards = () => {
     )
 }
 
-export default Awards;
+export default Home;
