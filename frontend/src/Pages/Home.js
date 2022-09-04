@@ -1,20 +1,27 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import Navbar from "../Components/Navbar";
-import AwardCard from "../Components/AwardCard";
+import Pagination from "../Components/Pagination";
+
+const AwardCard = lazy(() => import("../Components/AwardCard"));
 
 const Awards = () => {
     const [awards, setAwards] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
     
     useEffect(() => {;
         getAwards();
-    }, []);
+    }, [currentPage]);
 
     const getAwards = async () => {
-        const response = await axios.get('http://localhost:8000/api/v1/awards');
+        const response = await axios.get(`http://localhost:8000/api/v1/awards?page=${currentPage}`);
         const { data, success } = response.data;
 
-        if (success) setAwards(data.awards);
+        if (success) {
+            setAwards(data.awards);
+            setTotalPages(data.totalPages);
+        }
     }
 
     return (
@@ -28,27 +35,18 @@ const Awards = () => {
                     </div>
                 ) : (
                     awards.map(award => (
-                        <AwardCard key={award._id} type={award.type} poin={award.poin} name={award.name} />
+                        <Suspense key={award._id} fallback={<div>Loading...</div>}>
+                            <AwardCard type={award.type} poin={award.poin} name={award.name} />
+                        </Suspense>
                     ))
                 )}
-            </div>
 
-            {/* Pagination */}
-            {/* <ul className="mt-10 mb-10 flex flex-row justify-center items-center gap-4">
-                <li>
-                    <img src="/left-arrow.svg" width={35} height={35} alt="left-arrow" />
-                </li>
-                <li>1</li>
-                <li>&#8230;</li>
-                <li>5</li>
-                <li>6</li>
-                <li>7</li>
-                <li>&#8230;</li>
-                <li>25</li>
-                <li>
-                    <img src="/right-arrow.svg" width={35} height={35} alt="left-arrow" />
-                </li>
-            </ul> */}
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={page => setCurrentPage(page)}
+                />
+            </div>
         </>
     )
 }

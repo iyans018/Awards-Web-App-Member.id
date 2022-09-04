@@ -2,10 +2,34 @@ import { useState } from "react";
 import FilterButton from "./FilterButton";
 
 const Filter = ({ open, setOpen }) => {
-    const awardsType = ["All Type", "Vouchers", "Products", "Others"];
+    const awardsType = [
+        { _id: 1, name: "All Type" },
+        { _id: 2, name: "Vouchers" },
+        { _id: 3, name: "Products" },
+        { _id: 4, name: "Giftcard" }
+    ];
     const [poin, setPoin] = useState(10000);
     const [type, setType] = useState([]);
     const [choosenFilter, setChoosenFilter] = useState({});
+    const [checked, setChecked] = useState(new Array(awardsType.length).fill(false));
+
+    const handleChange = (position) => {
+        const updatedChecked = checked.map((item, index) => index === position ? !item : item);
+
+        setChecked(updatedChecked);
+    }
+
+    const handleChangePoin = (e) => {
+        setPoin(e.target.value);
+        const newChoosenFilter = { ...choosenFilter, poin: [10000, poin] };
+        setChoosenFilter(newChoosenFilter);
+    }
+
+    const onCloseSelectedPoin = () => {
+        let newChoosenFilter = choosenFilter;
+        delete newChoosenFilter.poin;
+        setChoosenFilter(newChoosenFilter);
+    }
 
     return (
         <div className={`${!open ? 'hidden' : ''} fixed z-[1] overflow-x-hidden inset-y-0 left-0 w-full h-screen px-5 py-4 bg-white`}>
@@ -21,7 +45,7 @@ const Filter = ({ open, setOpen }) => {
                 />
             </section>
             <section className="mb-5 flex flex-col gap-2" id="slected-filter">
-                <FilterButton text="Poin: 10000 - 500000" crossIcon />
+                {choosenFilter.poin && <FilterButton text={`Poin: 10000 - ${poin}`} crossIcon onClick={() => onCloseSelectedPoin()} />}
                 <FilterButton text="Type: Voucher, Product" crossIcon />
                 <FilterButton text="Clear All Filter" />
             </section>
@@ -38,7 +62,7 @@ const Filter = ({ open, setOpen }) => {
                     max={1000000}
                     className="w-full mb-8"
                     value={poin}
-                    onChange={(e) => setPoin(e.target.value)}
+                    onChange={(e) => handleChangePoin(e)}
                 />
             </section>
             <section id="awards-type">
@@ -47,8 +71,8 @@ const Filter = ({ open, setOpen }) => {
                     awardsType.map((type, index) => {
                         return (
                             <div key={index} className="flex flex-row mt-2 gap-4 items-center">
-                                <input className="w-4 h-4" type="checkbox" name={type} />
-                                <label className="font-medium text-blue-500">{type}</label>
+                                <input className="w-4 h-4" type="checkbox" name={type.name} checked={checked[index]} onChange={() => handleChange(index)} />
+                                <label className="font-medium text-blue-500">{type.name}</label>
                             </div>
                         )
                     })
