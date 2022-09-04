@@ -6,17 +6,17 @@
 
 ## How to install dependencies
 - Open project directory Awards Web App through cmd or terminal
-- > cd backend
-- > npm install
-- > cd ../frontend
-- > npm install
+- `cd backend`
+- `npm install`
+- `cd ../frontend`
+- `npm install`
 
 ## How to run the app
 Run the backend and the frontend at the same time on different terminal or cmd
 ### Run backend app
-- > cd backend
-- > npm run dev
+- `cd backen`
+- `npm run dev`
 
 ### Run frontend app
-- > cd frontend
-- > npm start
+- `cd frontend`
+- `npm start`
