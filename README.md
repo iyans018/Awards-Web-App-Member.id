@@ -2,7 +2,7 @@
 ## Requirements
 - Node.js v16.15.1
 - npm v8.11.0
-- MongoDB installed on local or change DB_URI in .env file on the 'backend/.env'
+- MongoDB installed on local or change DB_URI with your Mongo Atlas url in .env file on the 'backend/.env'
 
 ## How to install dependencies
 - Open project directory Awards Web App through cmd or terminal
@@ -14,7 +14,7 @@
 ## How to run the app
 Run the backend and the frontend at the same time on different terminal or cmd
 ### Run backend app
-- `cd backen`
+- `cd backend`
 - `npm run dev`
 
 ### Run frontend app
